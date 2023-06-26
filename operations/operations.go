@@ -3,25 +3,10 @@ package operations
 import (
 	"eventsWeb/db"
 	"eventsWeb/models"
-	"github.com/gin-gonic/gin"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 	"net/http"
-)
 
-func TestDbConnection(c *gin.Context) {
-	dsn := db.ConstructDsn()
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "DB connection OK",
-		})
-	}
-}
+	"github.com/gin-gonic/gin"
+)
 
 func CreateEvent(c *gin.Context) {
 	var webEvent models.WebEvent
@@ -73,11 +58,4 @@ func DeleteEvent(c *gin.Context) {
 			"message": "Deleted",
 		})
 	}
-}
-
-func ShowDsn(c *gin.Context) {
-	dsn := db.ConstructDsn()
-	c.JSON(http.StatusOK, gin.H{
-		"dsn": dsn,
-	})
 }
