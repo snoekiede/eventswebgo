@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: web
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: iedesnoek/webevents:v8
+          image: iedesnoek/webevents:v10
           imagePullPolicy: IfNotPresent
 
           env:
