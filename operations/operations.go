@@ -44,7 +44,7 @@ func CreateEvent(c *gin.Context) {
 }
 
 func ListEvents(c *gin.Context) {
-	result := make(chan []models.WebEvent)
+	result := make(chan models.OperationResult[[]models.WebEvent])
 
 	dbConnection, err := db.GetConnection()
 	if err != nil {
@@ -59,12 +59,20 @@ func ListEvents(c *gin.Context) {
 	go func(context *gin.Context) {
 		var webEvents []models.WebEvent
 
-		dbConnection.Connection.Find(&webEvents)
-		result <- webEvents
+		dbResult := dbConnection.Connection.Find(&webEvents)
+		if dbResult.Error != nil {
+			result <- models.ConstructWithError[[]models.WebEvent](dbResult.Error)
+		} else {
+			result <- models.ConstructWithoutError[[]models.WebEvent](&webEvents)
+		}
 
 	}(c.Copy())
-	c.JSON(http.StatusOK, <-result)
-
+	finalResult := <-result
+	if finalResult.Result != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": finalResult.Result})
+	} else {
+		c.JSON(http.StatusOK, finalResult.Value)
+	}
 }
 
 func FindEvent(c *gin.Context) {
