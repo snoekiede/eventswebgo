@@ -11,6 +11,11 @@ import (
 func InitializeDatabaseConnection() (*gorm.DB, error) {
 	dsn := ConstructDsn()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in InitializeDatabaseConnection", r)
+		}
+	}()
 	//if err != nil {
 	//		panic("Failed to connect to database")
 	//}
@@ -29,7 +34,7 @@ func getEnvironmentVariableWithDefault(key string, defaultValue string) string {
 func ConstructDsn() string {
 	host := getEnvironmentVariableWithDefault("host", "localhost")
 	user := getEnvironmentVariableWithDefault("user", "postgres")
-	password := getEnvironmentVariableWithDefault("password", "<secret>")
+	password := getEnvironmentVariableWithDefault("password", "Piloten2030")
 	dbname := getEnvironmentVariableWithDefault("dbname", "webevents")
 	port := getEnvironmentVariableWithDefault("port", "5432")
 
