@@ -3,6 +3,7 @@ package main
 import (
 	"eventsWeb/operations"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 

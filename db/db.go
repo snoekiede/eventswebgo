@@ -2,9 +2,10 @@ package db
 
 import (
 	"fmt"
+	"os"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"os"
 )
 
 func InitializeDatabaseConnection() (*gorm.DB, error) {
@@ -28,7 +29,7 @@ func getEnvironmentVariableWithDefault(key string, defaultValue string) string {
 func ConstructDsn() string {
 	host := getEnvironmentVariableWithDefault("host", "localhost")
 	user := getEnvironmentVariableWithDefault("user", "postgres")
-	password := getEnvironmentVariableWithDefault("password", "Piloten2030")
+	password := getEnvironmentVariableWithDefault("password", "<secret>")
 	dbname := getEnvironmentVariableWithDefault("dbname", "webevents")
 	port := getEnvironmentVariableWithDefault("port", "5432")
 
