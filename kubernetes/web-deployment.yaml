@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: iedesnoek/webevents:v8
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: "host"
+              valueFrom:
+                configMapKeyRef:
+                  key: HOST
+                  name: db-secret-credentials
+            - name: "user"
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: db-secret-credentials
+            - name: "password"
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: db-secret-credentials
+            - name: "dbname"
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: db-secret-credentials
+            - name: "port"
+              valueFrom:
+                configMapKeyRef:
+                  key: PORT
+                  name: db-secret-credentials
+
+
