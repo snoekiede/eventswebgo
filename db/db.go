@@ -34,7 +34,7 @@ func getEnvironmentVariableWithDefault(key string, defaultValue string) string {
 func ConstructDsn() string {
 	host := getEnvironmentVariableWithDefault("host", "localhost")
 	user := getEnvironmentVariableWithDefault("user", "postgres")
-	password := getEnvironmentVariableWithDefault("password", "<your secret password>")
+	password := getEnvironmentVariableWithDefault("password", "<Your password>")
 	dbname := getEnvironmentVariableWithDefault("dbname", "webevents")
 	port := getEnvironmentVariableWithDefault("port", "5432")
 

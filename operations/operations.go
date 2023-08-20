@@ -20,8 +20,8 @@ func CreateEvent(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No database connection"})
 		return
 	}
-	go func(context *gin.Context) {
-		conversionError := c.BindJSON(&webEvent)
+	go func(localContext *gin.Context) {
+		conversionError := localContext.BindJSON(&webEvent)
 		if conversionError != nil {
 			result <- models.ConstructWithError[models.WebEvent](conversionError)
 		} else {
@@ -56,7 +56,7 @@ func ListEvents(c *gin.Context) {
 		return
 	}
 
-	go func(context *gin.Context) {
+	go func(localContext *gin.Context) {
 		var webEvents []models.WebEvent
 
 		dbResult := dbConnection.Connection.Find(&webEvents)
@@ -87,8 +87,8 @@ func FindEvent(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No database connection"})
 		return
 	}
-	go func(context *gin.Context) {
-		id := c.Param("id")
+	go func(localContext *gin.Context) {
+		id := localContext.Param("id")
 
 		dbResult := dbConnection.Connection.First(&webEvent, id)
 		if dbResult.Error != nil {
@@ -116,8 +116,8 @@ func DeleteEvent(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No database connection"})
 		return
 	}
-	go func(context *gin.Context) {
-		id := c.Param("id")
+	go func(localContext *gin.Context) {
+		id := localContext.Param("id")
 
 		dbResult := dbConnection.Connection.Delete(&models.WebEvent{}, id)
 		if dbResult.Error != nil {

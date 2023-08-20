@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: iedesnoek/webevents:v10
+          image: <your docker username>/eventswebgo:v1
           imagePullPolicy: IfNotPresent
 
           env:
